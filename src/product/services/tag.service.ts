@@ -1,0 +1,145 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ProductResponseDto } from '../models/product/product.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Product } from '../models/product/product.entity';
+import { Tag } from '../models/tag/tag.entity';
+import { Repository, SelectQueryBuilder } from 'typeorm';
+import { SingleTagDto, SingleTagProductDto, Status } from '../models/tag/tag.dto';
+
+@Injectable()
+export class TagService {
+  constructor(
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
+  ) {}
+
+  async createTag(payload): Promise<SingleTagDto> {
+    try {
+      return await this.tagRepository.save(payload);
+    } catch (error) {
+      let status = {
+        success: false,
+        statusCodeDB: error.code,
+        statusMessage: error.detail,
+        timestamp: new Date().toISOString(),
+      };
+      throw new HttpException(status, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async getTags(page, limit): Promise<SingleTagDto[]> {
+    const skippedItems = (page - 1) * limit;
+    try {
+      return await this.tagRepository
+        .createQueryBuilder('product_tag')
+        .leftJoinAndSelect('product_tag.images', 'images')
+        .orderBy('product_tag.date_created', 'ASC')
+        .skip(skippedItems)
+        .take(limit)
+        .getMany();
+    } catch (error) {
+      let status = {
+        success: false,
+        statusCodeDB: error.code,
+        statusMessage: error.detail,
+        timestamp: new Date().toISOString(),
+      };
+      throw new HttpException(status, HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+
+  async getTagByTagId(id: string): Promise<SingleTagDto> {
+    try {
+      return await this.tagRepository
+        .createQueryBuilder('product_tag')
+        .leftJoinAndSelect('product_tag.images', 'images')
+        .where('product_tag.id= :id', { id })
+        .getOne();
+    } catch (error) {
+      let status = {
+        success: false,
+        statusCodeDB: error.code,
+        statusMessage: error.detail,
+        timestamp: new Date().toISOString(),
+      };
+      throw new HttpException(status, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async getProductsByTagId(page, limit, id): Promise<ProductResponseDto[]> {
+  
+
+    const skippedItems = (page - 1) * limit;
+    try {
+
+      let productTag: SingleTagProductDto =
+      await this.tagRepository
+        .createQueryBuilder('product_tag')
+        .leftJoinAndSelect('product_tag.products', 'products')
+        .leftJoinAndSelect('products.images', 'images')
+        .skip(skippedItems)
+        .take(limit)
+        .where('product_tag.id= :id', { id })
+        .getOne();
+    let arr = [];
+    arr = productTag.products;
+
+    return arr;
+
+    } catch (error) {
+      let status = {
+        success: false,
+        statusCodeDB: error.code,
+        statusMessage: error.detail,
+        timestamp: new Date().toISOString(),
+      };
+
+      throw new HttpException(status, HttpStatus.NOT_FOUND);
+    }
+
+  }
+
+  async updateTag(tag_id: string, payload): Promise<SingleTagDto> {
+    try {
+      if (typeof payload.tag_id !== 'undefined') {
+        delete payload.tag_id;
+      }
+      let prevTag = await this.tagRepository.findOne(tag_id);
+      payload['id'] = tag_id;
+      let updtag = await this.tagRepository.save(payload);
+      return Object.assign(prevTag, updtag);
+    } catch (error) {
+      let status = {
+        success: false,
+        statusCodeDB: error.code,
+        statusMessage: error.detail,
+        timestamp: new Date().toISOString(),
+      };
+      throw new HttpException(status, HttpStatus.CONFLICT);
+    }
+  }
+
+  async deleteTag(tag_id: string): Promise<Status> {
+    try {
+      const delCategory = await this.tagRepository.findOne(tag_id);
+
+      await this.tagRepository.delete(tag_id);
+      let status = {
+        success: true,
+        statusCodeDB: 200,
+        statusMessage: `${delCategory.name} successfully deleted`,
+        timestamp: new Date().toISOString(),
+      };
+      return status
+
+    } catch (error) {
+      let status = {
+        success: false,
+        statusCodeDB: error.code,
+        statusMessage: error.detail,
+        timestamp: new Date().toISOString(),
+      };
+      throw new HttpException(status, HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+}
