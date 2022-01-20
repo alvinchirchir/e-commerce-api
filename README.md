@@ -11,7 +11,11 @@
 ## Description
 
 
-A simple inventory api that has CRUD operations. 
+A simple inventory api that has CRUD operations.
+Criteria to be used by Shopify
+
+Filtering based on fields/inventory count/tags/other metadata
+
 
 ##Requirements 
 
@@ -19,11 +23,15 @@ Javascript
 Node js 
 Postgres database https://www.postgresql.org/
 
-Postgres needs to be installed on computer/ server.
+Postgres needs to be installed on computer/server.
 
-After installing postgres initialize a database named ' shopify-challenge-2022 '
+After installing postgres initialize a database with an appropriate name i.e shopify-challenge-2022 and password i.e password
 
-This is the environment variable that will be used to link to the database. It is called DATABASE_URL in the .env .
+postgres://postgres:{password}@localhost:5432/{database name}
+
+For example i.e postgres://postgres:password@localhost:5432/shopify-challenge-2022
+
+This is the environment variable that will be used to link to the database. It is called DATABASE_URL in the .env . Change as required in the .env.
 
 Once database has been initialized follow the instructions below to install the API after pulling from github.:
 
@@ -47,8 +55,6 @@ Open browser and go the link below.
 (http://localhost:3000/api/)
 
 Use the api endpoints to test api.
-
-
 
 ## Stay in touch
 
