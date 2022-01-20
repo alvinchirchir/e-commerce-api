@@ -17,7 +17,7 @@ A simple inventory api that has CRUD operations.
 
 Javascript 
 Node js 
-Postgres https://www.postgresql.org/
+Postgres database https://www.postgresql.org/
 
 Postgres needs to be installed on computer/ server.
 
