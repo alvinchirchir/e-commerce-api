@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
-  CreateProductDto,
+  ProductDto,
   ProductResponseDto,
   Status,
 } from '../models/product/product.dto';
@@ -19,13 +19,9 @@ export class ProductService {
     private readonly tagService: TagService,
   ) {}
 
-  async createProduct(payload: object): Promise<object> {
+  async createProduct(payload: object): Promise<ProductResponseDto> {
     try {
       return await this.productRepository.save(payload);
-
-      //await this.inventoryService.createProductInventory(payload);
-
-      //Check whether images has been passed
     } catch (error) {
       let status = {
         success: false,
@@ -38,16 +34,20 @@ export class ProductService {
   }
 
   async getProducts(page, limit): Promise<object[]> {
-    const skippedItems = (page - 1) * limit;
+    //Pagination can be done, however if both page and limit are not passed all items will be fetched
     try {
-      return await this.productRepository
+      let query = this.productRepository
         .createQueryBuilder('products')
         .leftJoinAndSelect('products.categories', 'categories')
         .leftJoinAndSelect('products.images', 'images')
-        .orderBy('products.date_created', 'ASC')
-        .skip(skippedItems)
-        .take(limit)
-        .getMany();
+        .orderBy('products.date_created', 'ASC');
+
+      if (typeof page != 'undefined' && typeof limit != 'undefined') {
+        const skippedItems = (page - 1) * limit;
+
+        return await query.skip(skippedItems).take(limit).getMany();
+      }
+      return await query.getMany();
     } catch (error) {
       let status = {
         success: false,
@@ -79,10 +79,7 @@ export class ProductService {
     }
   }
 
-  async updateProduct(
-    product_id: string,
-    payload,
-  ): Promise<object> {
+  async updateProduct(product_id: string, payload): Promise<object> {
     let product = [];
     let productObj = {};
     let productUpdate = {};

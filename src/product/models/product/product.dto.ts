@@ -3,7 +3,20 @@ import {CategoryDto} from '../category/category.dto'
 import  {TagDto} from '../tag/tag.dto'
 
 
-export class CreateProductDto {
+export class ImageProductDto {
+
+  @ApiProperty({ type: String })
+  image_url: string;
+
+  @ApiProperty({ type: String })
+  thumbnail_url: string;
+
+  @ApiProperty({ type: String })
+  alt: string;
+}
+
+
+export class ProductDto {
   @ApiProperty({ type: String })
   name: string;
   @ApiProperty({ type: String })
@@ -21,8 +34,8 @@ export class CreateProductDto {
   @ApiProperty({ type: ()=>[TagDto] })
   tags: TagDto;
 
-  @ApiProperty({ type: String })
-  images: object[];
+  @ApiProperty({ type: ()=>[ImageProductDto] })
+  images: ImageProductDto[];
   @ApiProperty({ type: Number })
   quantity: number;
 }
@@ -35,26 +48,24 @@ export class ProductResponseDto {
 
   @ApiProperty({ type: String })
   desc: string;
-  @ApiProperty({ type: String })
-  SKU: string;
+
   @ApiProperty({ type: Boolean })
   active: boolean;
   @ApiProperty({ type: Number })
   price: number;
   @ApiProperty({ type: ()=>[CategoryDto] })
-  categories: CategoryDto;
+  categories: CategoryDto[];
 
   @ApiProperty({ type: ()=>[TagDto] })
-  tags: TagDto;
-  @ApiProperty({ type: String })
-  images: object[];
+  tags: TagDto[];
+  @ApiProperty({ type: ()=>[ImageProductDto] })
+  images: ImageProductDto[];
 
   @ApiProperty({ type: Date })
   date_created: Date;
   @ApiProperty({ type: Date })
   date_modified: Date;
-  @ApiProperty({ type: Date })
-  date_deleted: Date;
+ 
 }
 
 export class Status {

@@ -10,7 +10,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiNotAcceptableResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
-import { CreateProductDto, ProductResponseDto, Status } from '../models/product/product.dto';
+import { ProductDto, ProductResponseDto, Status } from '../models/product/product.dto';
 
 import { ProductService } from '../services/product.service';
 
@@ -28,8 +28,8 @@ export class ProductController {
     description: 'Create Fail',
     type:Status ,
   })
-  @ApiBody({ type: CreateProductDto })
-  createProduct(@Body() body):Promise<object> {
+  @ApiBody({ type: ProductDto })
+  createProduct(@Body() body):Promise<ProductResponseDto> {
     return this.productService.createProduct(body);
   }
 

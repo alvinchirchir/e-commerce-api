@@ -38,7 +38,7 @@ export class Product {
   desc: string;
 
 
-  @ManyToMany(() => Category,(category: Category) => category.products, { onDelete: 'CASCADE' })
+  @ManyToMany(() => Category,(category: Category) => category.products, { cascade: true })
   @JoinTable({
     name: 'product_categories',
     joinColumn: {
@@ -54,7 +54,7 @@ export class Product {
 
 
 
-  @ManyToMany(() => Tag,(tag: Tag) => tag.products, { onDelete: 'CASCADE' })
+  @ManyToMany(() => Tag,(tag: Tag) => tag.products, { cascade: true })
   @JoinTable({
     name: 'product_tags',
     joinColumn: {
