@@ -1,4 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import {CategoryDto} from '../category/category.dto'
+import  {TagDto} from '../tag/tag.dto'
+
 
 export class CreateProductDto {
   @ApiProperty({ type: String })
@@ -11,16 +14,13 @@ export class CreateProductDto {
   active: boolean;
   @ApiProperty({ type: Number })
   price: number;
-  @ApiProperty({ type: Number })
-  discount_price: number;
-  @ApiProperty({ type: String })
-  discount_id: string;
-  @ApiProperty({ type: String })
-  category_ids: string;
-  @ApiProperty({ type: String })
-  attribute_type_ids: string;
-  @ApiProperty({ type: String })
-  tag_ids: string;
+
+  @ApiProperty({ type: ()=>[CategoryDto] })
+  categories: CategoryDto;
+
+  @ApiProperty({ type: ()=>[TagDto] })
+  tags: TagDto;
+
   @ApiProperty({ type: String })
   images: object[];
   @ApiProperty({ type: Number })
@@ -32,8 +32,7 @@ export class ProductResponseDto {
   id: string;
   @ApiProperty({ type: String })
   name: string;
-  @ApiProperty({ type: String })
-  code: string;
+
   @ApiProperty({ type: String })
   desc: string;
   @ApiProperty({ type: String })
@@ -42,18 +41,14 @@ export class ProductResponseDto {
   active: boolean;
   @ApiProperty({ type: Number })
   price: number;
-  @ApiProperty({ type: Number })
-  discount_price: number;
-  @ApiProperty({ type: Object })
-  discount: object;
-  @ApiProperty({ type: Object })
-  inventory: object;
-  @ApiProperty({ type: Object })
-  categories: object[];
+  @ApiProperty({ type: ()=>[CategoryDto] })
+  categories: CategoryDto;
+
+  @ApiProperty({ type: ()=>[TagDto] })
+  tags: TagDto;
   @ApiProperty({ type: String })
   images: object[];
-  @ApiProperty({ type: String })
-  attribute_types: object[];
+
   @ApiProperty({ type: Date })
   date_created: Date;
   @ApiProperty({ type: Date })

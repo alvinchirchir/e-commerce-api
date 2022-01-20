@@ -8,8 +8,8 @@ async function bootstrap() {
 
 
   const config = new DocumentBuilder()
-  .setTitle('Sahari Ecommerce Api')
-  .setDescription('The SEApi will serve cms and ecommerce')
+  .setTitle('Ecommerce Api')
+  .setDescription('The Api will serve a simple ecommerce')
   .setVersion('1.0.0')
 
   

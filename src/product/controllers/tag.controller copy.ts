@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiNotAcceptableResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
 import { ProductResponseDto } from '../models/product/product.dto';
-import { CreateTagDto, SingleTagDto, Status } from '../models/tag/tag.dto';
+import { TagDto, SingleTagDto, Status } from '../models/tag/tag.dto';
 
 import { TagService } from '../services/tag.service';
 
@@ -29,7 +29,7 @@ export class TagController {
     description: 'Create Fail',
     type:Status ,
   })
-  @ApiBody({ type: CreateTagDto })
+  @ApiBody({ type: TagDto })
   createTag(@Body() body):Promise<SingleTagDto> {
     return this.tagService.createTag(body);
   }
@@ -90,6 +90,7 @@ export class TagController {
     description: 'Update Fail',
     type: Status,
   })
+  @ApiBody({ type: TagDto })
   updateTag(
     @Param('tag_id', new ParseUUIDPipe()) tag_id: string,
     @Body() body,

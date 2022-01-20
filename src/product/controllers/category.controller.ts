@@ -10,7 +10,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiBody, ApiConflictResponse, ApiCreatedResponse, ApiNotAcceptableResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
-import { CreateCategoryDto, SingleCategoryDto, Status } from '../models/category/category.dto';
+import { CategoryDto, SingleCategoryDto, Status } from '../models/category/category.dto';
 import { ProductResponseDto } from '../models/product/product.dto';
 
 import { CategoryService } from '../services/category.service';
@@ -29,8 +29,9 @@ export class CategoryController {
     description: 'Create Fail',
     type:Status ,
   })
-  @ApiBody({ type: CreateCategoryDto })
+  @ApiBody({ type: CategoryDto })
   createCategory(@Body() body):Promise<SingleCategoryDto> {
+    console.log(body)
     return this.categoryService.createCategory(body);
   }
 
@@ -90,6 +91,8 @@ export class CategoryController {
     description: 'Update Fail',
     type: Status,
   })
+  @ApiBody({ type: CategoryDto })
+
   updateCategory(
     @Param('category_id', new ParseUUIDPipe()) category_id: string,
     @Body() body,

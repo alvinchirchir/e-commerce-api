@@ -1,34 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ProductImageCategoryEntity } from './category_image.entity';
 
+export class ImageCategoryDto {
 
-export class CreateCategoryDto {
+  @ApiProperty({ type: String })
+  image_url: string;
+
+  @ApiProperty({ type: String })
+  thumbnail_url: string;
+
+  @ApiProperty({ type: String })
+  alt: string;
+}
+
+export class CategoryDto {
     @ApiProperty({ type: String })
     name: string;
     @ApiProperty({ type: String })
     desc: string;
     @ApiProperty({ type: Boolean })
     active: boolean;
-    @ApiProperty({ type: String })
-    images: object[];
+    @ApiProperty({ type: ()=>[ImageCategoryDto]})
+    images: ImageCategoryDto[];
   }
 
+
+
   export class SingleCategoryDto {
-    @ApiProperty({ type: String })
-    id: string;
+
     @ApiProperty({ type: String })
     name: string;
     @ApiProperty({ type: String })
     desc: string;
     @ApiProperty({ type: Boolean })
     active: boolean;
-    @ApiProperty({ type: String })
-    images: object[];
+    @ApiProperty({ type: ()=>[ImageCategoryDto]})
+    images: ImageCategoryDto[];
     @ApiProperty({ type: Date })
     date_created: Date;
     @ApiProperty({ type: Date })
     date_modified: Date;
-    @ApiProperty({ type: Date })
-    date_deleted: Date;
   }
 
   export class SingleCategoryProductDto {
@@ -48,8 +59,7 @@ export class CreateCategoryDto {
     date_created: Date;
     @ApiProperty({ type: Date })
     date_modified: Date;
-    @ApiProperty({ type: Date })
-    date_deleted: Date;
+ 
   }
 
   export class Status {

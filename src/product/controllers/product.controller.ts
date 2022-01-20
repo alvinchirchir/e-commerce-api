@@ -29,7 +29,7 @@ export class ProductController {
     type:Status ,
   })
   @ApiBody({ type: CreateProductDto })
-  createProduct(@Body() body):Promise<ProductResponseDto> {
+  createProduct(@Body() body):Promise<object> {
     return this.productService.createProduct(body);
   }
 
@@ -47,7 +47,7 @@ export class ProductController {
   getProducts(
     @Query('page') page: number,
     @Query('limit') limit: number,
-  ): Promise<ProductResponseDto[]> {
+  ): Promise<object[]> {
     return this.productService.getProducts(page, limit);
   }
 
@@ -60,7 +60,7 @@ export class ProductController {
     description: 'Get Fail',
     type: Status,
   })
-  getProductByProductId(@Param('id', new ParseUUIDPipe()) id: string):Promise<ProductResponseDto> {
+  getProductByProductId(@Param('id', new ParseUUIDPipe()) id: string):Promise<object> {
     return this.productService.getProductByProductId(id);
   }
 
@@ -80,7 +80,7 @@ export class ProductController {
   updateProduct(
     @Param('product_id', new ParseUUIDPipe()) product_id: string,
     @Body() body,
-  ):Promise<ProductResponseDto> {
+  ):Promise<object> {
     return this.productService.updateProduct(product_id, body);
   }
   //DELETE

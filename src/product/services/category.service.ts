@@ -32,16 +32,19 @@ export class CategoryService {
   }
 
   async getCategories(page, limit): Promise<SingleCategoryDto[]> {
-    const skippedItems = (page - 1) * limit;
+    //Pagination can be done, however if both page and limit are not passed all items will be fetched
     try {
-      return await this.categoryRepository
+      let query = this.categoryRepository
         .createQueryBuilder('product_category')
         .leftJoinAndSelect('product_category.images', 'images')
-        .orderBy('product_category.date_created', 'ASC')
-        .skip(skippedItems)
-        .take(limit)
+        .orderBy('product_category.date_created', 'ASC');
 
-        .getMany();
+      if (typeof page != 'undefined' && typeof limit != 'undefined') {
+        const skippedItems = (page - 1) * limit;
+
+        return await query.skip(skippedItems).take(limit).getMany();
+      }
+      return await query.getMany();
     } catch (error) {
       let status = {
         success: false,
@@ -103,18 +106,15 @@ export class CategoryService {
     }
   }
 
-  async updateCategory(category_id: string, payload): Promise<SingleCategoryDto> {
-
+  async updateCategory(
+    category_id: string,
+    payload,
+  ): Promise<SingleCategoryDto> {
     try {
-      if (typeof payload.category_id !== 'undefined') {
-        delete payload.category_id;
-      }
-      const prevCategory = await this.categoryRepository.findOne(category_id);
 
       payload['id'] = category_id;
       let updCategory = await this.categoryRepository.save(payload);
-      return Object.assign(prevCategory, updCategory);
-
+      return updCategory
     } catch (error) {
       let status = {
         success: false,
@@ -137,8 +137,7 @@ export class CategoryService {
         statusMessage: `${delCategory.name} successfully deleted`,
         timestamp: new Date().toISOString(),
       };
-      return status
-
+      return status;
     } catch (error) {
       let status = {
         success: false,

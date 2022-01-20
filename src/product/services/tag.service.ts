@@ -28,15 +28,21 @@ export class TagService {
   }
 
   async getTags(page, limit): Promise<SingleTagDto[]> {
-    const skippedItems = (page - 1) * limit;
-    try {
-      return await this.tagRepository
-        .createQueryBuilder('product_tag')
-        .leftJoinAndSelect('product_tag.images', 'images')
-        .orderBy('product_tag.date_created', 'ASC')
-        .skip(skippedItems)
-        .take(limit)
-        .getMany();
+
+        //Pagination can be done, however if both page and limit are not passed all items will be fetched
+        try {
+          let query = this.tagRepository
+          .createQueryBuilder('product_tag')
+          .leftJoinAndSelect('product_tag.images', 'images')
+          .orderBy('product_tag.date_created', 'ASC')
+    
+          if (typeof page != 'undefined' && typeof limit != 'undefined') {
+            const skippedItems = (page - 1) * limit;
+    
+            return await query.skip(skippedItems).take(limit).getMany();
+          }
+          return await query.getMany();
+  
     } catch (error) {
       let status = {
         success: false,
@@ -101,13 +107,9 @@ export class TagService {
 
   async updateTag(tag_id: string, payload): Promise<SingleTagDto> {
     try {
-      if (typeof payload.tag_id !== 'undefined') {
-        delete payload.tag_id;
-      }
-      let prevTag = await this.tagRepository.findOne(tag_id);
       payload['id'] = tag_id;
       let updtag = await this.tagRepository.save(payload);
-      return Object.assign(prevTag, updtag);
+      return updtag;
     } catch (error) {
       let status = {
         success: false,

@@ -1,15 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 
-export class CreateTagDto {
+export class ImageTagDto {
+
+  @ApiProperty({ type: String })
+  image_url: string;
+
+  @ApiProperty({ type: String })
+  thumbnail_url: string;
+
+  @ApiProperty({ type: String })
+  alt: string;
+}
+
+export class TagDto {
     @ApiProperty({ type: String })
     name: string;
     @ApiProperty({ type: String })
     desc: string;
     @ApiProperty({ type: Boolean })
     active: boolean;
-    @ApiProperty({ type: String })
-    images: object[];
+    @ApiProperty({ type: ()=>[ImageTagDto] })
+    images: ImageTagDto[];
   }
 
   export class SingleTagDto {
@@ -21,14 +33,13 @@ export class CreateTagDto {
     desc: string;
     @ApiProperty({ type: Boolean })
     active: boolean;
-    @ApiProperty({ type: String })
-    images: object[];
+    @ApiProperty({ type: ()=>[ImageTagDto] })
+    images: ImageTagDto[];
     @ApiProperty({ type: Date })
     date_created: Date;
     @ApiProperty({ type: Date })
     date_modified: Date;
-    @ApiProperty({ type: Date })
-    date_deleted: Date;
+  
   }
 
   export class SingleTagProductDto {
@@ -40,16 +51,15 @@ export class CreateTagDto {
     desc: string;
     @ApiProperty({ type: Boolean })
     active: boolean;
-    @ApiProperty({ type: String })
-    images: object[];
+    @ApiProperty({ type: ()=>[ImageTagDto] })
+    images: ImageTagDto[];
     @ApiProperty({ type: [Object] })
     products: object[];
     @ApiProperty({ type: Date })
     date_created: Date;
     @ApiProperty({ type: Date })
     date_modified: Date;
-    @ApiProperty({ type: Date })
-    date_deleted: Date;
+ 
   }
 
   export class Status {

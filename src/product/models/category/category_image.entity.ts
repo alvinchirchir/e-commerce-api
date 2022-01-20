@@ -33,6 +33,5 @@ export class ProductImageCategoryEntity{
     @UpdateDateColumn({ name: 'date_modified', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date_modified: Date;
 
-    @Column({type:"timestamp",default:()=>'CURRENT_TIMESTAMP'})
-    date_deleted:Date
+    
 }

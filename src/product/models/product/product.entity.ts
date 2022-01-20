@@ -11,12 +11,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Discount } from '../discount/discount.entity';
 import { Category } from '../category/category.entity';
-import { Inventory } from '../inventory/inventory.entity';
 import { ImageEntity } from './image.entity';
 import {Tag} from '../tag/tag.entity'
-import { ProductAttributeType } from '../attribute/attribute_type.entity';
 
 @Entity('products')
 export class Product {
@@ -28,11 +25,6 @@ export class Product {
   })
   name: string;
 
-  @Column({
-    type: 'varchar',
-    unique: true,
-  })
-  code: string;
 
   @Column({
     type: 'varchar',
@@ -45,10 +37,6 @@ export class Product {
   })
   desc: string;
 
-  @Column({
-    type: 'varchar',
-  })
-  SKU: string;
 
   @ManyToMany(() => Category,(category: Category) => category.products, { onDelete: 'CASCADE' })
   @JoinTable({
@@ -64,19 +52,7 @@ export class Product {
   })
   categories: Category[];
 
-  @ManyToMany(() => ProductAttributeType,(product_attribute_type: ProductAttributeType) => product_attribute_type.products, { onDelete: 'CASCADE' })
-  @JoinTable({
-    name: 'product_attribute_types',
-    joinColumn: {
-      name: 'product_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'product_attribute_type_id',
-      referencedColumnName: 'id',
-    },
-  })
-  attribute_types: ProductAttributeType[];
+
 
   @ManyToMany(() => Tag,(tag: Tag) => tag.products, { onDelete: 'CASCADE' })
   @JoinTable({
@@ -92,22 +68,17 @@ export class Product {
   })
   tags: Tag[];
 
-  @OneToOne(() => Inventory, (inventory) => inventory.product, {
-    cascade: true,
-  })
-  inventory: Inventory;
 
-  @Column({ default: 0 })
+
+  @Column({ default: null })
   price: number;
 
+  
   @Column({ default: 0 })
-  discount_price: number;
+  quantity: number;
 
-  @ManyToOne(() => Discount, (discount: Discount) => discount.products, {
-    onDelete: 'SET NULL',
-  })
-  @JoinColumn({ name: 'discount_id' })
-  discount: Discount;
+
+
 
   @OneToMany(() => ImageEntity, (image: ImageEntity) => image.product,{cascade:true})
   images: ImageEntity[];
@@ -122,6 +93,4 @@ export class Product {
   })
   date_modified: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date_deleted: Date;
 }
