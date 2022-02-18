@@ -11,18 +11,11 @@
 ## Description
 
 
-<p>A simple inventory api that has CRUD operations.</p>
-<p>
-Criteria to be used by Shopify</p>
-
-
-<p>
-Filtering based on fields/inventory count/tags/other metadata
-</p>
+<p>A simple e-commerce api with CRUD operations.Products can be grouped into categories and tags</p>
 
 ## Requirements 
 
-Javascript 
+Typescript 
 Node js 
 Postgres database https://www.postgresql.org/
 
@@ -34,8 +27,7 @@ Postgres needs to be installed on computer/server.
 After installing postgres initialize a database with an appropriate name i.e ecommerce and password i.e password
 </p>
 <p>
-
-postgres://postgres:{password}@localhost:5432/{database name}
+postgres://postgres:{password}@localhost:5432/{database-name}
 </p>
 <p>
 
