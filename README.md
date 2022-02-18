@@ -31,7 +31,7 @@ Postgres needs to be installed on computer/server.
 </p>
 <p>
 
-After installing postgres initialize a database with an appropriate name i.e shopify-challenge-2022 and password i.e password
+After installing postgres initialize a database with an appropriate name i.e ecommerce and password i.e password
 </p>
 <p>
 
@@ -39,7 +39,7 @@ postgres://postgres:{password}@localhost:5432/{database name}
 </p>
 <p>
 
-For example i.e postgres://postgres:password@localhost:5432/shopify-challenge-2022
+For example i.e postgres://postgres:password@localhost:5432/ecommerce
 </p>
 <p>
 This is the environment variable that will be used to link to the database. It is called DATABASE_URL in the .env . Change as required in the .env.
